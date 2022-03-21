@@ -16,12 +16,12 @@ The keyword search takes in a strong, with "and", "or", spaces, or any combinati
 Spaces are also considered as an "and" requirement. <br/>
 For example, if the user keys in "Chicken Indian", then the programme understands this as the user wanting the shop to sell BOTH chicken and indian (ie the keywords in "canteens.xlsx" contain both chicken and indian under its keywords. This is similar to "Chicken and Indian" <br/>
 If the user keys in "Chicken or Indian", the user is returned a list of stalls which EITHER sell chicken OR indian. <br/>
-If the user eys in "Chicken and Indian or Chinese", he is returned a lsit of stalls which EITHER sells (chicken AND indian) OR (chinese).
+If the user keys in "Chicken and Indian or Chinese", he is returned a lsit of stalls which EITHER sells (chicken AND indian) OR (chinese).
 
 ## Price-based Search
 This search function is similar to the keyword search function, in that it allows the user to key in foods/cuisines that he/she likes to consume, and asks for an additional price parameter, which is the users budget. Following the keyword search function, if the user enters 5, then the user will only be shown results for food places which are under $5.
 
 ## Location Based Search
-The pygame module is used here, and running this script will show a new window with the NTU Campus map. The user then selects the location of user A and user B (presumably 2 friends), and returns a list of k results back to the user, where k is the number of canteens that the user inputs. The search optimization is done using the lowest TOTAL euclidean (or straight line distnace) of the 2 users. <br/>
+The pygame module is used here, and running this script will show a new window with the NTU Campus map. The user then selects the location of user A and user B (presumably 2 friends), and returns a list of k results back to the user, where k is the number of canteens that the user inputs. The search optimization is done using the lowest TOTAL euclidean (or straight line distnace) of the 2 users. This would make sense because it takes into account the straight line distance of each individual user to the dining location. I chose this over considering the midpoint of the 2 users as it directly calculated euclidean distances between individual and dining location rather than to reach the mid point first before moving off to the dining location.<br/>
 The scipy.spatial.distance module was used here, to calculate euclidean distance. Alternatively, pythagoras theorem could be applied using the sqrt function. The euclidean distance function here works similarly. <br/>
 Further work could also be done such that the optimization could allow for the return of the shortest distance from A or shortest distane from B, of shortest mean distance. This would only require very minor changes in the programme. 
