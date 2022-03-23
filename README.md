@@ -27,7 +27,9 @@ If the user keys in "Chicken and Indian or Chinese", he is returned a lsit of st
 <br/>
 To satisfy AND conditions (which takes precedence over OR conditions), a numpy array of zeroes is used. When the condition is satisfied, then an element of the numpy array is changed to 1. If the entire array does not contain 1 at the end of the interation, then it is accepted and the stall name is returned. This allows for partioning of AND and OR keywords, which allow for AND and OR to be used in the same line. <br/>
 <br/>
-Finally, the keyword match counter is implemented by a simple for and count function, and results are returned.
+Finally, the keyword match counter is implemented by a simple for and count function, and results are returned. <br/>
+<br/>
+The keyword match counter also works for short forms, so inputting "chick" will yield results for chicken rice.
 
 ## Price-based Search
 This search function is similar to the keyword search function, in that it allows the user to key in foods/cuisines that he/she likes to consume, and asks for an additional price parameter, which is the users budget. Following the keyword search function, if the user enters 5, then the user will only be shown results for food places which are under $5.
@@ -40,3 +42,7 @@ The scipy.spatial.distance module was used here, to calculate euclidean distance
 Further work could also be done such that the optimization could allow for the return of the shortest distance from A or shortest distane from B, of shortest mean distance. This would only require very minor changes in the programme. <br/>
 <br/>
 The distance shown here is the total distance that A and B would have to travel in order to reach the dining location. 
+
+## Further Work
+This project could include smarter features implemented through natural language processing. For example, "mcd" is a common abbreviation for "macdonalds". With adequate databases, it would be implementable such that "mcd" yields a result for macdonalds. As of now, the shortforms only work in that they must be consecutive characters in a string. For example, "chick" would yield results for chicken rice, but "mrd" would not yield results for mcronalds.
+
