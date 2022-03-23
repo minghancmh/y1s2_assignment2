@@ -172,12 +172,10 @@ def keyword_search_clean_data(keywords):
 
 # def search_by_keyword(keywords)
 def search_by_keyword_print():
-    keywords = input("Please key in your food preferences, use only AND, OR, or spaces")
+    keywords = input("Please key in your food preferences, use only AND, OR, or spaces:")
     try:
         if keywords == "":
             raise TypeError("No input detected, please input your preferences.")
-        elif type(keywords) != str:
-            raise ValueError("You have not keyed in a string, use double quotation marks.")
 
         else:
             final_keyword_list = keyword_search_clean_data(keywords)
@@ -190,19 +188,50 @@ def search_by_keyword_print():
                         for item in final_keyword_list:
                             if type(item) != list:
                                 if item in keywords:
-                                    reco_stalls_keywords.append(stall)
+                                    reco_stalls_keywords.append(key+" - "+stall)
+                                    
                             else:
                                 check_true = np.zeros(len(item))
                                 for and_item in item:
                                     if and_item in keywords:
                                         check_true[item.index(and_item)] = 1
                                 if 0 not in check_true:
-                                    reco_stalls_keywords.append(stall)
-                                
+                                    reco_stalls_keywords.append(key+" - "+stall)
+                                    
+            reco_keywords_count = []                       
             if len(reco_stalls_keywords) == 0:
                 print("No matches, try broadening your search parameters or check your spelling")
             else:
-                print(reco_stalls_keywords)                 
+                
+                for item in reco_stalls_keywords:
+                    if reco_stalls_keywords.count(item)==1:
+                        reco_keywords_count.append([item,1])
+                    else:
+                        reco_keywords_count.append([item,reco_stalls_keywords.count(item)])
+                final_list = []
+                for foodstall in reco_keywords_count:
+                    if foodstall not in final_list:
+                        final_list.append(foodstall)
+                final_list.sort(key = lambda x: x[1])
+        
+                print("Food Stall(s) found: " + str(len(final_list)))
+                print("")
+
+        
+                counter = []
+                for item in final_list:
+                    counter.append(item[1])
+                # print(counter)
+
+                for i in range(max(counter),0,-1):
+                    print("")
+                    print(f"Food Stalls that match {i} keyword(s):")
+                    print("")
+                    for item in final_list:
+                        if item[1] == i:
+                            print(item[0])
+                
+
     except TypeError as err:
         print(err)
     except ValueError as err:
@@ -261,17 +290,43 @@ def search_by_keyword_return():
 
 def search_by_price():
     possibleStalls = search_by_keyword_return()
-    max_price = float(input("What is your budget?"))
+    # max_price = input("Enter Maximum Meal Price (S$)")
+    while True:
+        max_price = input("Enter Maximum Meal Price (S$)")
+        try:
+            max_price = float(max_price)
+
+            if max_price<0:
+                raise TypeError("Please key in positive integer or float.")
+            break
+        except TypeError as err:
+            print(err)
+            continue
+        except ValueError:
+            print("Please input an integer or float, not a string!")
+            continue
+
+    
+        
+
     final_stall_by_price = []
+    final_stall_no_matches = []
     for key,value in canteen_stall_prices.items():
             for stall,price in value.items():
                 for a_stall in possibleStalls:
                     if stall == a_stall and price<=max_price:
-                        final_stall_by_price.append(stall)
+                        final_stall_by_price.append(key + " - " + stall + " - " + "$"+str("{:.2f}".format(price)))
+                    elif stall == a_stall:
+                        final_stall_no_matches.append([key,stall,price])
+                            
     if len(final_stall_by_price) == 0:
-        print("No matches, try broadening your search parameters or check your spelling")
+        print("No food stall found with specified price range. Recommended Food Stall with the closest price range.")
+        final_stall_no_matches.sort(key = lambda x:x[2])
+        print(final_stall_no_matches[0][0] + " - " + final_stall_no_matches[0][1] + " - " +"$" + str("{:.2f}".format(final_stall_no_matches[0][2])))
     else:
-        print(final_stall_by_price)
+        print("Food Stall(s) found: "+ str(len(final_stall_by_price)))
+        for item in final_stall_by_price:
+            print(item)
 
 
 
@@ -293,11 +348,14 @@ def search_nearest_canteens(user_locations, k):
     # print(type(total_dist["Ananda Kitchen"]))
     total_dist = dict(sorted(total_dist.items(), key=lambda item:item[1]))
     list_of_nearest_canteens = []
-    for nearest_canteen in total_dist.keys():
-        list_of_nearest_canteens.append(nearest_canteen)
+    for nearest_canteen,dist in total_dist.items():
+        list_of_nearest_canteens.append([nearest_canteen,str(int(dist))])
     # print(total_dist)
     # print(list_of_nearest_canteens)
-    print(list_of_nearest_canteens[0:k])
+    print(f'{k} nearest canteen(s) found.')
+    list_of_nearest_canteens_short = list_of_nearest_canteens[0:k]
+    for loc in list_of_nearest_canteens_short:
+        print(loc[0] + " - " + loc[1] + "m")
         
     
 
@@ -387,3 +445,4 @@ def main():
 
 
 main()
+
