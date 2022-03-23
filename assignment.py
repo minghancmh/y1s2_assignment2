@@ -4,6 +4,7 @@ import time
 import pandas as pd
 import numpy as np
 from scipy.spatial import distance
+import validation as vd
 
 
 # load dataset for keyword dictionary - provided
@@ -182,21 +183,16 @@ def search_by_keyword_print():
             reco_stalls_keywords = []
             # for choice in clean_list:
             for key,value in canteen_stall_keywords.items():
-                    for stall,keywords in value.items():
-                        keywords = keywords.upper()
-                        # print(keywords)
-                        for item in final_keyword_list:
-                            if type(item) != list:
-                                if item in keywords:
-                                    reco_stalls_keywords.append(key+" - "+stall)
-                                    
-                            else:
-                                check_true = np.zeros(len(item))
-                                for and_item in item:
-                                    if and_item in keywords:
-                                        check_true[item.index(and_item)] = 1
-                                if 0 not in check_true:
-                                    reco_stalls_keywords.append(key+" - "+stall)
+                for stall,keywords in value.items():
+                    keywords = keywords.upper() 
+            
+                    for item in final_keyword_list:
+                        check_true = np.zeros(len(item))
+                        for and_item in item:
+                            if and_item in keywords:
+                                check_true[item.index(and_item)] = 1
+                        if 0 not in check_true:
+                            reco_stalls_keywords.append(key+" - "+stall)
                                     
             reco_keywords_count = []                       
             if len(reco_stalls_keywords) == 0:
@@ -213,9 +209,8 @@ def search_by_keyword_print():
                     if foodstall not in final_list:
                         final_list.append(foodstall)
                 final_list.sort(key = lambda x: x[1])
-        
-                print("Food Stall(s) found: " + str(len(final_list)))
                 print("")
+                print("Food Stall(s) found: " + str(len(final_list)))
 
         
                 counter = []
@@ -391,7 +386,8 @@ def main():
         print("4 -- Location-based Search")
         print("5 -- Exit Program")
         print("=======================")
-        option = int(input("Enter option [1-5]: "))
+        option_unclean = input("Enter option [1-5]: ")
+        option = vd.inp_valid(option_unclean)
 
         
         if option == 1:
