@@ -19,7 +19,7 @@ The keyword search takes in a strong, with "and", "or", spaces, or any combinati
 <br/>
 Spaces are also considered as an "and" requirement. <br/>
 <br/>
-For example, if the user keys in "Chicken Indian", then the programme understands this as the user wanting the shop to sell BOTH chicken and indian (ie the keywords in "canteens.xlsx" contain both chicken and indian under its keywords. This is similar to "Chicken and Indian" <br/>
+For example, if the user keys in "Chicken Indian", then the programme understands this as the user wanting the shop to sell BOTH chicken and indian (ie the keywords in "canteens.xlsx" contain both chicken and indian under its keywords. This is similar to "Chicken and Indian". <br/>
 <br/>
 If the user keys in "Chicken or Indian", the user is returned a list of stalls which EITHER sell chicken OR indian. <br/>
 <br/>
