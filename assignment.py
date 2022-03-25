@@ -310,7 +310,7 @@ def search_by_price():
             for stall,price in value.items():
                 for a_stall in possibleStalls:
                     if stall == a_stall and price<=max_price:
-                        final_stall_by_price.append(key + " - " + stall + " - " + "$"+str("{:.2f}".format(price)))
+                        final_stall_by_price.append([key,stall,price])
                     elif stall == a_stall:
                         final_stall_no_matches.append([key,stall,price])
                             
@@ -320,8 +320,10 @@ def search_by_price():
         print(final_stall_no_matches[0][0] + " - " + final_stall_no_matches[0][1] + " - " +"$" + str("{:.2f}".format(final_stall_no_matches[0][2])))
     else:
         print("Food Stall(s) found: "+ str(len(final_stall_by_price)))
+        final_stall_by_price.sort(key = lambda x:x[2])
+        # print(final_stall_by_price)
         for item in final_stall_by_price:
-            print(item)
+            print(item[0] + " - " + item[1] + " - " + "$" + str("{:.2f}".format(item[2])))
 
 
 
@@ -369,8 +371,7 @@ canteen_stall_prices = load_stall_prices("/Users/minghanchan/Desktop/RE1016 - En
 canteen_locations = load_canteen_location("/Users/minghanchan/Desktop/RE1016 - Engineering Computation/Assignment 2/assignment/canteens.xlsx")
 # print(canteen_stall_keywords)
 # print(canteen_stall_prices)
-# print(canteen_locations)
-
+# print(len(canteen_locations))
 # main program template - provided
 def main():
     loop = True
@@ -423,15 +424,15 @@ def main():
             user_locations = [userA_location, userB_location]
             try:
                 k = int(input("How many canteens suggestions would you like?"))
-                if k<0:
-                    raise ValueError("Negative value of k entered, default value k=1 set.")
-                elif type(k) == str:
-                    raise TypeError("Invalid value entered, default value k=1 set")
-            except ValueError as err:
+                if k<0 or k>15:
+                    raise TypeError("Invalid value of k entered, default value k=1 set. k values should be an integer from 1-15.")
+            except TypeError as err:
+                print("")
                 print(err)
                 k=1
-            except TypeError as err:
-                print(err)
+            except ValueError:
+                print("")
+                print("Invalid value entered, default value k=1 is set.")
                 k=1
             search_nearest_canteens(user_locations, k)
         elif option == 5:
